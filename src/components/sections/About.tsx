@@ -15,108 +15,147 @@ const item: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
+const backgroundLogos = [
+  {
+    name: "React",
+    svg: (
+      <svg viewBox="-11.5 -10.23174 23 20.46348" className="w-full h-full">
+        <circle cx="0" cy="0" r="2.05" fill="#61DAFB" />
+        <g stroke="#61DAFB" strokeWidth="1" fill="none">
+          <ellipse rx="11" ry="4.2" />
+          <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+          <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+        </g>
+      </svg>
+    ),
+  },
+  {
+    name: "Next.js",
+    svg: (
+      <svg viewBox="0 0 180 180" className="w-full h-full" fill="none">
+        <circle cx="90" cy="90" r="90" fill="#000000" stroke="#333" strokeWidth="2" />
+        <path
+          d="M149.508 157.438L69.1478 54H54V125.97H66.1136V69.3836L139.999 164.845C143.333 162.614 146.509 160.137 149.508 157.438Z"
+          fill="#FFFFFF"
+        />
+        <rect x="115" y="54" width="12" height="72" fill="#FFFFFF" />
+      </svg>
+    ),
+  },
+  {
+    name: "Python",
+    svg: (
+      <svg viewBox="0 0 110 110" className="w-full h-full">
+        <path
+          fill="#3776AB"
+          d="M53.7 4C28.7 4 30.2 14.8 30.2 14.8l.1 11.2h24.2v3.5H20.7S5 27.6 5 52.8s13.8 24.5 13.8 24.5h8.2v-11.6s-.5-13.8 13.6-13.8h23.4s13.1.2 13.1-12.8V16.8S79.6 4 53.7 4zm-13.6 7.4a3.8 3.8 0 1 1 0 7.6 3.8 3.8 0 0 1 0-7.6z"
+        />
+        <path
+          fill="#FFD438"
+          d="M56.3 106c25 0 23.5-10.8 23.5-10.8l-.1-11.2H55.5v-3.5h33.8s15.7 1.9 15.7-23.3-13.8-24.5-13.8-24.5h-8.2v11.6s.5 13.8-13.6 13.8H46s-13.1-.2-13.1 12.8v12.3s-.7 12.8 23.4 12.8zm13.6-7.4a3.8 3.8 0 1 1 0-7.6 3.8 3.8 0 0 1 0 7.6z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "TypeScript",
+    svg: (
+      <svg viewBox="0 0 128 128" className="w-full h-full">
+        <rect width="128" height="128" rx="16" fill="#3178C6" />
+        <path
+          fill="#FFF"
+          d="M56.2 70.8H43.9v35.4h-13V70.8H18.5V60h37.7v10.8zm53.3 12.2c0 6.6-2.5 11.7-7.4 15.3-4.9 3.6-11.5 5.4-19.8 5.4-4.8 0-9.2-.7-13.2-2.1-4-1.4-7.2-3.4-9.6-6l7.4-8.8c3.8 4 8.7 6 14.8 6 3.6 0 6.4-.8 8.4-2.3s3-3.6 3-6.1c0-2-.8-3.7-2.3-5-1.5-1.3-4.4-2.6-8.6-3.8-6.1-1.7-10.6-3.8-13.4-6.3-2.8-2.5-4.2-6.1-4.2-10.8 0-6.1 2.3-10.9 7-14.3s10.8-5.1 18.5-5.1c4.5 0 8.5.7 12.2 2.1 3.6 1.4 6.7 3.3 9.2 5.8l-7 8.7c-3.4-3.4-7.8-5.1-13.2-5.1-3.3 0-5.9.7-7.7 2.1-1.8 1.4-2.8 3.2-2.8 5.4 0 1.8.7 3.3 2.1 4.5 1.4 1.2 4.1 2.3 8.1 3.5 6.4 1.8 11.1 4 14 6.6 3 2.5 4.5 6.2 4.5 11.1z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "Gemini AI",
+    svg: (
+      <svg viewBox="0 0 24 24" className="w-full h-full">
+        <defs>
+          <linearGradient id="gemini-brand" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4E75FF" />
+            <stop offset="50%" stopColor="#9B51E0" />
+            <stop offset="100%" stopColor="#FF6492" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#gemini-brand)"
+          d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "Node.js",
+    svg: (
+      <svg viewBox="0 0 32 32" className="w-full h-full">
+        <path
+          fill="#5FA04E"
+          d="M16 2.5l11.5 6.6v13.8L16 29.5 4.5 22.9V9.1L16 2.5zm-.9 3.5l-8.6 5 8.6 5 8.6-5-8.6-5zm-9.5 7.1v9.8l8.5 4.9V18l-8.5-4.9zm19 0l-8.5 4.9v9.8l8.5-4.9v-9.8z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "Firebase",
+    svg: (
+      <svg viewBox="0 0 32 32" className="w-full h-full">
+        <path fill="#FFCA28" d="M6.3 22.8L9.5 2.5a.8.8 0 011.5-.2l4.8 9.1L6.3 22.8z" />
+        <path fill="#FFA000" d="M19.7 11.5l2.4-4.8a.8.8 0 011.5 0l4.5 16.1-8.4-11.3z" />
+        <path fill="#F57C00" d="M4.9 24.8L6.7 22.6l9.6-12.1 3.7 6.9-15.1 7.4z" />
+        <path
+          fill="#FFCA28"
+          d="M28.1 23.8L16.8 30a1.5 1.5 0 01-1.5 0L3.9 23.8a.9.9 0 01-.2-1.3l2.6-3.2 21.8-6.1 1.4 9.1a.9.9 0 01-1.4 1.5z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "Tailwind CSS",
+    svg: (
+      <svg viewBox="0 0 24 24" className="w-full h-full">
+        <path
+          fill="#38BDF8"
+          d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"
+        />
+      </svg>
+    ),
+  },
+];
+
 export default function About() {
+  // Duplicate for seamless continuous loop
+  const duplicatedLogos = [...backgroundLogos, ...backgroundLogos];
+
   return (
     <section
       id="about"
       className="w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 py-24 relative overflow-hidden"
     >
-      {/* ─── Big Dynamic Tool Logos in Background (Low Transparency) ─── */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
-        {/* React Logo — Top Right floating */}
-        <motion.div
-          animate={{
-            y: [0, -30, 0],
-            rotate: [0, 360],
-          }}
-          transition={{
-            y: { repeat: Infinity, duration: 14, ease: "easeInOut" },
-            rotate: { repeat: Infinity, duration: 40, ease: "linear" },
-          }}
-          className="absolute -top-10 right-10 md:right-20 w-64 h-64 md:w-80 md:h-80 text-[var(--accent)] opacity-[0.035] dark:opacity-[0.055]"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-full h-full">
-            <ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(0 12 12)" />
-            <ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(60 12 12)" />
-            <ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(120 12 12)" />
-            <circle cx="12" cy="12" r="2" fill="currentColor" />
-          </svg>
-        </motion.div>
+      {/* ─── Big Dynamic Brand Colored Tool Logos in One Single Background Row ─── */}
+      <div className="absolute inset-0 flex items-center pointer-events-none select-none overflow-hidden z-0">
+        {/* Left and right fade gradient masks */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[var(--bg)] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[var(--bg)] to-transparent z-10" />
 
-        {/* Python Logo — Bottom Right drifting */}
-        <motion.div
-          animate={{
-            y: [0, 25, 0],
-            x: [0, -20, 0],
-            rotate: [0, -8, 8, 0],
+        {/* Moving single horizontal row of big colorful brand logos */}
+        <div
+          className="flex items-center gap-20 sm:gap-28 md:gap-36 w-max"
+          style={{
+            animation: "bg-tool-logos-marquee 32s linear infinite",
           }}
-          transition={{
-            repeat: Infinity,
-            duration: 18,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-10 right-16 md:right-32 w-48 h-48 md:w-64 md:h-64 text-[var(--fg)] opacity-[0.03] dark:opacity-[0.045]"
         >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-            <path d="M11.91 0c-3.13 0-5.46.28-5.46 2.37v2.33h5.54v.78H4.27C2.08 5.48 0 7.37 0 10.63c0 3.23 1.83 4.96 4.19 4.96h1.56v-2.22c0-2.48 2.1-4.52 4.67-4.52h5.45c.84 0 1.52-.69 1.52-1.53V2.37C17.39.28 15.04 0 11.91 0zm-2.2 1.54a1.05 1.05 0 110 2.1 1.05 1.05 0 010-2.1zm2.38 6.94c-2.48 0-4.59 2.04-4.59 4.52v4.95c0 2.09 2.33 2.37 5.46 2.37 3.13 0 5.46-.28 5.46-2.37v-2.33h-5.54v-.78h7.72c2.19 0 4.27-1.89 4.27-5.15 0-3.23-1.83-4.96-4.19-4.96h-1.56v2.22c0 2.48-2.1 4.52-4.67 4.52H6.42a1.52 1.52 0 01-1.52-1.53V8.48h6.19zm2.2 13.98a1.05 1.05 0 110-2.1 1.05 1.05 0 010 2.1z"/>
-          </svg>
-        </motion.div>
-
-        {/* Next.js Logo — Center Right floating */}
-        <motion.div
-          animate={{
-            y: [0, -20, 0],
-            x: [0, 15, 0],
-            scale: [1, 1.06, 1],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 16,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/3 right-4 md:right-1/4 w-44 h-44 md:w-56 md:h-56 text-[var(--accent)] opacity-[0.03] dark:opacity-[0.05]"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-            <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.88 18.06l-5.64-7.38v7.38H10.4V7.47h1.84l5.48 7.23V7.47h1.84v10.59h-1.68zM7.72 7.47v10.59H5.88V7.47h1.84z"/>
-          </svg>
-        </motion.div>
-
-        {/* Gemini / AI Spark Logo — Bottom Left floating */}
-        <motion.div
-          animate={{
-            y: [0, -18, 0],
-            rotate: [0, 15, -15, 0],
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 12,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-8 left-20 md:left-40 w-40 h-40 md:w-52 md:h-52 text-[var(--accent)] opacity-[0.035] dark:opacity-[0.05]"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-            <path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z"/>
-          </svg>
-        </motion.div>
-
-        {/* TypeScript Logo — Middle Left drifting */}
-        <motion.div
-          animate={{
-            y: [0, 20, 0],
-            x: [0, -12, 0],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 20,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/4 left-10 md:left-24 w-36 h-36 md:w-48 md:h-48 text-[var(--fg)] opacity-[0.025] dark:opacity-[0.04]"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-            <path d="M1.5 0h21A1.5 1.5 0 0124 1.5v21a1.5 1.5 0 01-1.5 1.5h-21A1.5 1.5 0 010 22.5v-21A1.5 1.5 0 011.5 0zm10.1 14.8h-2.3v-5H6.9V8h4.7v6.8zm7.4-1.2c-.3.8-.9 1.3-1.6 1.3-.8 0-1.4-.4-1.6-1.1-.1-.3-.1-.5-.1-.8h-2.1c0 .8.3 1.6.8 2.2.6.7 1.6 1.1 2.8 1.1 1.4 0 2.4-.4 3.1-1.2.7-.8 1-1.8 1-2.9 0-.8-.2-1.5-.7-2-.5-.5-1.2-.9-2.2-1.2-.7-.2-1.2-.4-1.4-.6-.2-.2-.3-.4-.3-.7 0-.3.1-.6.4-.8.3-.2.7-.3 1.2-.3.6 0 1 .1 1.3.4.3.3.5.7.5 1.2h2.1c0-.9-.4-1.7-1-2.2-.6-.6-1.5-.9-2.7-.9-1.2 0-2.2.3-2.9 1-.7.7-1 1.5-1 2.5 0 .8.2 1.4.7 1.9.5.5 1.3.9 2.4 1.2.7.2 1.2.4 1.5.6.3.2.4.5.4.9 0 .4-.1.7-.4.9z"/>
-          </svg>
-        </motion.div>
+          {duplicatedLogos.map((tool, idx) => (
+            <div
+              key={`${tool.name}-${idx}`}
+              className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 shrink-0 opacity-30 dark:opacity-40 hover:opacity-60 transition-opacity filter drop-shadow-md"
+            >
+              {tool.svg}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ─── Foreground Content ─── */}
@@ -178,6 +217,18 @@ export default function About() {
           </div>
         </motion.div>
       </div>
+
+      {/* Marquee Animation Keyframe for Background Stream */}
+      <style jsx>{`
+        @keyframes bg-tool-logos-marquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </section>
   );
 }

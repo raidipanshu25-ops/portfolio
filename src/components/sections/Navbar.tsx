@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -15,7 +15,7 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,9 +25,21 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setIsMobileMenuOpen(false);
+    setIsMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -42,11 +54,11 @@ export function Navbar() {
           : "bg-transparent py-6"
       }`}
     >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo */}
+      <div className="w-full mx-auto px-4 sm:px-8 md:px-12 flex items-center justify-between">
+        {/* Left — Logo */}
         <Link
           href="/"
-          className="text-2xl font-heading font-bold text-[var(--fg)] tracking-tight hover:opacity-80 transition-opacity"
+          className="text-2xl font-heading font-bold text-[var(--fg)] tracking-tight hover:opacity-80 transition-opacity z-50 relative"
           onClick={(e) => {
             if (window.location.pathname === "/") {
               e.preventDefault();
@@ -57,78 +69,74 @@ export function Navbar() {
           dipanshu<span className="text-[var(--accent)]">.</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <nav className="flex items-center gap-6">
-            {NAV_LINKS.map((link, index) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--accent)] transition-colors group flex items-center gap-1"
-              >
-
-                {link.name}
-              </a>
-            ))}
-          </nav>
-          
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-[var(--accent)] text-[var(--accent)] rounded px-4 py-2 text-sm font-mono hover:bg-[var(--accent-tint)] transition-colors"
-            >
-              Resume
-            </a>
-          </div>
+        {/* Center — Dark Mode toggle (absolute center) */}
+        <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
+          <ThemeToggle />
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center gap-4">
-          <ThemeToggle />
+        {/* Right — MENU + LET'S TALK */}
+        <div className="flex items-center gap-4 md:gap-6">
+          {/* Mobile theme toggle */}
+          <div className="md:hidden">
+            <ThemeToggle />
+          </div>
+
+          {/* MENU button */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-[var(--accent)] p-2 z-50 relative"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-sm font-medium tracking-widest uppercase text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors cursor-pointer z-50 relative"
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? "CLOSE" : "MENU"}
           </button>
+
+          {/* LET'S TALK CTA */}
+          <a
+            href="#contact"
+            onClick={(e) => handleLinkClick(e, "#contact")}
+            className="hidden sm:inline-flex items-center gap-2 bg-[var(--fg)] text-[var(--bg)] rounded-full px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity z-50 relative"
+          >
+            LET&apos;S TALK&nbsp;&nbsp;&rarr;
+          </a>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Full-screen Menu Overlay */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "tween", duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-[var(--bg)] z-40 flex flex-col items-center justify-center min-h-screen"
           >
             <nav className="flex flex-col items-center gap-8 w-full px-6">
               {NAV_LINKS.map((link, index) => (
-                <a
+                <motion.a
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="text-xl font-medium text-[var(--fg)] hover:text-[var(--accent)] transition-colors flex flex-col items-center gap-1"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ delay: index * 0.08, duration: 0.3 }}
+                  className="text-4xl md:text-5xl font-heading font-bold text-[var(--fg)] hover:text-[var(--accent)] transition-colors"
                 >
-
                   {link.name}
-                </a>
+                </motion.a>
               ))}
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 border border-[var(--accent)] text-[var(--accent)] rounded px-8 py-4 text-lg font-mono hover:bg-[var(--accent-tint)] transition-colors w-[80%] text-center"
+              <motion.a
+                href="#contact"
+                onClick={(e) => handleLinkClick(e, "#contact")}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ delay: NAV_LINKS.length * 0.08, duration: 0.3 }}
+                className="mt-6 inline-flex items-center gap-2 bg-[var(--fg)] text-[var(--bg)] rounded-full px-8 py-4 text-lg font-medium hover:opacity-90 transition-opacity"
               >
-                Resume
-              </a>
+                LET&apos;S TALK&nbsp;&nbsp;&rarr;
+              </motion.a>
             </nav>
           </motion.div>
         )}

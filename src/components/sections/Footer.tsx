@@ -1,6 +1,16 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function Footer() {
   return (
-    <footer className="py-6 flex flex-col items-center justify-center text-center">
+    <motion.footer
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="py-6 flex flex-col items-center justify-center text-center"
+    >
       <div className="text-[var(--fg-muted)] font-mono text-xs flex flex-col items-center gap-2">
         <p>Designed & Built by Dipanshu Kumar</p>
         <p>
@@ -11,6 +21,6 @@ export default function Footer() {
           <a href="mailto:kumardipanshu482@gmail.com" className="hover:text-[var(--accent)] transition-colors">Email</a>
         </p>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

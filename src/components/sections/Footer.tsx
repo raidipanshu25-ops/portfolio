@@ -18,7 +18,7 @@ export default function Footer() {
           <span className="mx-2">·</span>
           <a href="https://linkedin.com/in/dipanshu-kumar-6308a5335" className="hover:text-[var(--accent)] transition-colors" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <span className="mx-2">·</span>
-          <a href="mailto:kumardipanshu482@gmail.com" className="hover:text-[var(--accent)] transition-colors">Email</a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kumardipanshu482@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors">Email</a>
         </p>
       </div>
     </motion.footer>

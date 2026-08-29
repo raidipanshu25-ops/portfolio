@@ -49,9 +49,11 @@ export function SocialSidebar() {
           <LinkedinLogo className="w-[20px] h-[20px]" />
         </a>
         <a
-          href="mailto:kumardipanshu482@gmail.com"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=kumardipanshu482@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-[var(--fg-secondary)] hover:text-[var(--accent)] hover:-translate-y-[3px] transition-all duration-300"
-          aria-label="Email"
+          aria-label="Email Dipanshu on Gmail"
         >
           <MailIcon className="w-[22px] h-[22px]" />
         </a>
@@ -61,7 +63,9 @@ export function SocialSidebar() {
       {/* Right Sidebar */}
       <div className="hidden md:flex fixed bottom-0 right-10 flex-col items-center gap-6 z-50">
         <a
-          href="mailto:kumardipanshu482@gmail.com"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=kumardipanshu482@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-[var(--fg-secondary)] hover:text-[var(--accent)] hover:-translate-y-[3px] transition-all duration-300 text-sm font-mono tracking-widest"
           style={{ writingMode: "vertical-rl" }}
         >

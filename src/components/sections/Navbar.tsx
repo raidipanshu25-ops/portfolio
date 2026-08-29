@@ -133,16 +133,18 @@ export function Navbar() {
                     {link.name}
                   </motion.a>
                 ))}
-                <motion.button
-                  onClick={handleOpenConnect}
+                <motion.a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: NAV_LINKS.length * 0.08, duration: 0.3 }}
                   className="mt-6 inline-flex items-center gap-2 bg-[var(--fg)] text-[var(--bg)] rounded-full px-8 py-4 text-lg font-medium hover:opacity-90 transition-opacity cursor-pointer"
                 >
-                  LET&apos;S TALK&nbsp;&nbsp;&rarr;
-                </motion.button>
+                  RESUME&nbsp;&nbsp;&rarr;
+                </motion.a>
               </nav>
             </motion.div>
           )}

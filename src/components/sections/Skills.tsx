@@ -32,7 +32,7 @@ const skillGroups = [
   },
   {
     title: "Trading & Infrastructure",
-    skills: ["MT5 Integration", "Vision AI Charts", "Risk Controllers", "Live Forex (2.5yr+)", "SDN Security", "Network Defense"],
+    skills: ["MT5 Integration", "Vision AI Charts", "Risk Controllers", "Live Forex (2.5yr+)", "Network Defense"],
   },
 ];
 

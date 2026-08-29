@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import { ExternalLink, Github, X, Sparkles, CheckCircle2, Cpu, ArrowUpRight } from "lucide-react";
+import { ExternalLink, Github, X, Sparkles, CheckCircle2, Cpu, ArrowUpRight, Workflow, ShieldAlert, Rocket } from "lucide-react";
 import Link from "next/link";
 
 const container: Variants = {
@@ -25,6 +25,9 @@ interface Project {
   description: string;
   overview: string;
   features: string[];
+  howItWorks: { step: string; detail: string }[];
+  challenges: { problem: string; solution: string }[];
+  roadmap: string[];
   tech: string[];
   impact: string;
   github: string;
@@ -46,6 +49,24 @@ const projects: Project[] = [
       "Hard-gate Risk Controller that intercepts and auto-rejects revenge trades, oversized lot sizes, and off-plan orders.",
       "Real-time analytics dashboard with automated session statistics, win rate metrics, and risk-reward ratios.",
     ],
+    howItWorks: [
+      { step: "Connect", detail: "MT5 terminal opens a local TCP bridge. The Node.js WebSocket server subscribes to live tick events for selected currency pairs." },
+      { step: "Stream", detail: "Tick-by-tick price data is normalized, timestamped, and pushed to all connected clients in real time with sub-100ms latency." },
+      { step: "Analyze", detail: "Vision AI captures chart screenshots at configurable intervals, runs pattern detection (engulfing, pin bars, liquidity sweeps), and scores each setup." },
+      { step: "Gate", detail: "Before any trade order executes, the Risk Controller validates lot size, daily loss limits, consecutive loss count, and plan adherence. Non-compliant orders are blocked instantly." },
+      { step: "Report", detail: "Session statistics — win rate, average R:R, drawdown, and equity curve — are computed and served via REST API to the analytics dashboard." },
+    ],
+    challenges: [
+      { problem: "MT5 has no native WebSocket support", solution: "Built a custom TCP-to-WebSocket bridge using a Python EA that pipes tick data to a Node.js relay server." },
+      { problem: "Vision AI latency on high-frequency charts", solution: "Implemented adaptive screenshot intervals — faster on volatile sessions, slower during consolidation — reducing unnecessary API calls by 60%." },
+      { problem: "Revenge trading after consecutive losses", solution: "Added a hard cooldown gate: after 3 consecutive losses, the system enforces a mandatory 30-minute lockout before allowing new entries." },
+    ],
+    roadmap: [
+      "Multi-pair correlation engine to detect conflicting trades across correlated currencies.",
+      "Backtesting module to replay historical sessions against the Risk Controller rules.",
+      "Mobile push notifications for high-confidence trade setups detected by Vision AI.",
+      "Integration with TradingView webhooks for external signal ingestion.",
+    ],
     tech: ["Node.js", "WebSocket", "REST API", "Vision AI", "MT5", "Python", "Tailwind CSS"],
     impact:
       "Eliminated emotional trade entries and reduced trade analysis latency to sub-second precision across multiple forex currency pairs.",
@@ -66,6 +87,24 @@ const projects: Project[] = [
       "Integration with Google Gemini 2.5 Flash API for automated semantic transcription and object tagging.",
       "Export structured, machine-ready JSON datasets formatted for LLM and vision model fine-tuning.",
     ],
+    howItWorks: [
+      { step: "Ingest", detail: "User provides one or more YouTube URLs. yt-dlp downloads the highest-quality video and separates the audio stream into a standalone WAV file." },
+      { step: "Extract Frames", detail: "OpenCV runs scene-change detection and adaptive keyframe sampling. Redundant or near-duplicate frames are discarded, keeping only visually distinct moments." },
+      { step: "Transcribe", detail: "The separated audio stream is transcribed to text, then time-aligned with the extracted keyframes to create synchronized text–image pairs." },
+      { step: "AI Analysis", detail: "Keyframes + transcripts are batched and sent to Gemini 2.5 Flash, which returns semantic tags, object labels, scene descriptions, and content classifications." },
+      { step: "Export", detail: "All annotations are merged into a structured JSON schema optimized for LLM fine-tuning and vision model training. Each record contains frame path, timestamp, transcript segment, and AI-generated tags." },
+    ],
+    challenges: [
+      { problem: "YouTube rate limiting and format inconsistencies", solution: "Implemented retry logic with exponential backoff and format fallback chains (webm → mp4 → audio-only) to handle edge cases gracefully." },
+      { problem: "Redundant frames inflating dataset size", solution: "Built an adaptive threshold algorithm using structural similarity (SSIM) scoring — only frames with <85% similarity to the previous keyframe are retained." },
+      { problem: "Gemini API token limits on long videos", solution: "Chunked the input into 5-minute segments with overlapping context windows, then merged the outputs with deduplication logic." },
+    ],
+    roadmap: [
+      "Batch processing UI to queue and monitor multiple video extractions simultaneously.",
+      "Support for Whisper-based local transcription as a fallback when API limits are reached.",
+      "Direct export to HuggingFace Datasets format for one-click model training uploads.",
+      "Real-time progress streaming via WebSocket so users can watch extraction status live.",
+    ],
     tech: ["Python", "yt-dlp", "OpenCV", "Gemini 2.5 Flash", "JSON", "Multimodal AI"],
     impact:
       "Reduced manual dataset annotation time by over 85%, accelerating video analysis workflows from hours to minutes.",
@@ -85,6 +124,22 @@ const projects: Project[] = [
       "Machine learning intrusion detection classifier identifying DDoS floods, TCP SYN scans, and ARP spoofing.",
       "Automated OpenFlow flow-rule generation to reroute malicious traffic away from active production hosts.",
       "Real-time network telemetry and attack visualization interface.",
+    ],
+    howItWorks: [
+      { step: "Monitor", detail: "The SDN controller continuously inspects flow telemetry from all switches, logging packet headers, flow durations, and byte counts." },
+      { step: "Classify", detail: "A trained ML classifier analyzes flow features in real time to categorize traffic as benign, DDoS, port scan, or ARP spoof with >94% accuracy." },
+      { step: "Rotate", detail: "When a threat is detected, the IP mutation engine reassigns host addresses across the network, invalidating the attacker's reconnaissance map." },
+      { step: "Isolate", detail: "OpenFlow rules are dynamically injected to reroute or drop malicious flows, quarantining compromised segments without disrupting legitimate traffic." },
+    ],
+    challenges: [
+      { problem: "IP rotation breaking active TCP sessions", solution: "Implemented connection-aware rotation that defers IP changes on hosts with active sessions until a natural timeout or handoff." },
+      { problem: "High false-positive rate on benign traffic spikes", solution: "Added a sliding-window feature aggregator that evaluates traffic patterns over 30-second windows instead of per-packet decisions." },
+      { problem: "OpenFlow rule table overflow on large networks", solution: "Built a rule compaction engine that merges overlapping CIDR-based rules and garbage-collects expired entries every 60 seconds." },
+    ],
+    roadmap: [
+      "Integration with enterprise SIEM platforms (Splunk, ELK) for centralized threat visibility.",
+      "Honeypot auto-deployment to redirect attackers into decoy environments for forensic analysis.",
+      "Multi-controller federation for campus-scale SDN deployments across multiple buildings.",
     ],
     tech: ["Python", "SDN", "OpenFlow", "Network Security", "AI Classification", "Machine Learning"],
     impact:
@@ -444,6 +499,45 @@ export default function Projects() {
                 </ul>
               </div>
 
+              {/* How It Works — Step by Step */}
+              <div className="mb-6">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--fg-muted)] mb-3 flex items-center gap-1.5">
+                  <Workflow className="w-3.5 h-3.5 text-[var(--accent)]" /> How It Works
+                </h4>
+                <div className="space-y-3">
+                  {selectedProject.howItWorks.map((step, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 flex items-center justify-center text-xs font-mono font-bold text-[var(--accent)]">
+                        {i + 1}
+                      </span>
+                      <div>
+                        <p className="text-xs sm:text-sm font-heading font-semibold text-[var(--fg)] mb-0.5">{step.step}</p>
+                        <p className="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed">{step.detail}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Challenges & Solutions */}
+              <div className="mb-6">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--fg-muted)] mb-3 flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5 text-[var(--accent)]" /> Challenges & Solutions
+                </h4>
+                <div className="space-y-3">
+                  {selectedProject.challenges.map((c, i) => (
+                    <div key={i} className="p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border)]/70">
+                      <p className="text-xs sm:text-sm font-semibold text-[var(--fg)] mb-1 flex items-start gap-1.5">
+                        <span className="text-red-400 shrink-0">✕</span> {c.problem}
+                      </p>
+                      <p className="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed flex items-start gap-1.5">
+                        <span className="text-emerald-400 shrink-0">✓</span> {c.solution}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Impact / Outcome */}
               <div className="mb-6 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)]/70">
                 <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--accent)] mb-1">
@@ -452,6 +546,21 @@ export default function Projects() {
                 <p className="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed">
                   {selectedProject.impact}
                 </p>
+              </div>
+
+              {/* Future Roadmap */}
+              <div className="mb-6">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--fg-muted)] mb-3 flex items-center gap-1.5">
+                  <Rocket className="w-3.5 h-3.5 text-[var(--accent)]" /> Future Roadmap
+                </h4>
+                <ul className="space-y-2">
+                  {selectedProject.roadmap.map((item, i) => (
+                    <li key={i} className="flex items-start text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed">
+                      <span className="text-[var(--fg-muted)] mr-2 mt-0.5 shrink-0 font-mono text-xs">◇</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Technologies */}

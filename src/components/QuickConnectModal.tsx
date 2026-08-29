@@ -6,7 +6,6 @@ import {
   X,
   Mail,
   Linkedin,
-  Github,
   Copy,
   Check,
   ExternalLink,
@@ -22,13 +21,13 @@ interface QuickConnectModalProps {
 
 export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
   const [copied, setCopied] = useState(false);
+  const [sentStatus, setSentStatus] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState("Project Collaboration");
   const [senderName, setSenderName] = useState("");
   const [senderMessage, setSenderMessage] = useState("");
 
   const EMAIL = "kumardipanshu482@gmail.com";
   const LINKEDIN = "https://linkedin.com/in/dipanshu-kumar-6308a5335";
-  const GITHUB = "https://github.com/raidipanshu25-ops";
 
   const topics = [
     "Project Collaboration",
@@ -45,14 +44,41 @@ export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  // Launch email client with pre-filled content
-  const handleSendEmail = (e: React.FormEvent) => {
-    e.preventDefault();
-    const subject = encodeURIComponent(`[${selectedTopic}] - Inquiry from ${senderName || "Website Visitor"}`);
-    const body = encodeURIComponent(
-      `Hi Dipanshu,\n\n${senderMessage || "I came across your portfolio and would like to connect with you regarding " + selectedTopic + "."}\n\nBest regards,\n${senderName || "Your Name"}`
-    );
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+  const getEmailContent = () => {
+    const subject = `[${selectedTopic}] - Inquiry from ${senderName.trim() || "Website Visitor"}`;
+    const body = `Hi Dipanshu,\n\n${senderMessage.trim() || "I came across your portfolio and would like to connect with you regarding " + selectedTopic + "."}\n\nBest regards,\n${senderName.trim() || "Your Name"}`;
+    return { subject, body };
+  };
+
+  // Open in Gmail Web
+  const handleOpenGmail = () => {
+    const { subject, body } = getEmailContent();
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+    setSentStatus(true);
+    setTimeout(() => setSentStatus(false), 4000);
+  };
+
+  // Open in default email app (mailto)
+  const handleOpenMailto = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const { subject, body } = getEmailContent();
+    const mailtoUrl = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Copy content to clipboard as convenience backup
+    navigator.clipboard.writeText(`To: ${EMAIL}\nSubject: ${subject}\n\n${body}`);
+
+    // Trigger mailto link directly via an anchor click
+    const tempLink = document.createElement("a");
+    tempLink.href = mailtoUrl;
+    tempLink.target = "_blank";
+    tempLink.rel = "noopener noreferrer";
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+
+    setSentStatus(true);
+    setTimeout(() => setSentStatus(false), 4000);
   };
 
   // Close on Escape key
@@ -123,7 +149,7 @@ export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
 
             {/* Fastest 1-Click Channels */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-              {/* Direct Mail with Copy */}
+              {/* Direct Mail with Copy + Gmail */}
               <div className="p-3.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
@@ -139,7 +165,7 @@ export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
                   <button
                     type="button"
                     onClick={handleCopyEmail}
-                    className="flex-1 flex items-center justify-center gap-1 text-xs font-mono py-1.5 px-2.5 rounded-lg border border-[var(--border)] bg-[var(--bg)] hover:border-[var(--accent)] text-[var(--fg)] transition-all cursor-pointer"
+                    className="flex-1 flex items-center justify-center gap-1 text-xs font-mono py-1.5 px-2 rounded-lg border border-[var(--border)] bg-[var(--bg)] hover:border-[var(--accent)] text-[var(--fg)] transition-all cursor-pointer"
                   >
                     {copied ? (
                       <>
@@ -153,13 +179,15 @@ export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
                       </>
                     )}
                   </button>
-                  <a
-                    href={`mailto:${EMAIL}?subject=Let's%20Connect`}
-                    className="flex-1 flex items-center justify-center gap-1 text-xs font-mono py-1.5 px-2.5 rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-opacity"
+                  <button
+                    type="button"
+                    onClick={handleOpenGmail}
+                    className="flex-1 flex items-center justify-center gap-1 text-xs font-mono py-1.5 px-2 rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-opacity cursor-pointer font-medium"
+                    title="Open in Gmail Web in new tab"
                   >
-                    <span>Open Mail</span>
+                    <span>Gmail Web</span>
                     <ExternalLink className="w-3 h-3" />
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -188,7 +216,7 @@ export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
             </div>
 
             {/* Quick Note Composer */}
-            <form onSubmit={handleSendEmail} className="pt-4 border-t border-[var(--border)]/60">
+            <div className="pt-4 border-t border-[var(--border)]/60">
               <div className="flex items-center justify-between mb-3">
                 <label className="text-xs font-mono uppercase tracking-wider text-[var(--fg-muted)] flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[var(--accent)]" /> Or Drop a Quick Note
@@ -231,15 +259,33 @@ export function QuickConnectModal({ isOpen, onClose }: QuickConnectModalProps) {
                 />
               </div>
 
-              {/* Send Button */}
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-[var(--fg)] text-[var(--bg)] rounded-xl py-3 text-xs font-heading font-bold uppercase tracking-wider hover:opacity-90 transition-opacity cursor-pointer shadow-md"
-              >
-                <Send className="w-3.5 h-3.5" />
-                <span>Launch Email with this Note</span>
-              </button>
-            </form>
+              {/* Action Buttons: Gmail Web & Default Mail */}
+              <div className="flex flex-col sm:flex-row gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleOpenGmail}
+                  className="flex-1 flex items-center justify-center gap-2 bg-[var(--accent)] text-white rounded-xl py-3 text-xs font-heading font-bold uppercase tracking-wider hover:opacity-90 transition-opacity cursor-pointer shadow-md"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Send via Gmail Web</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleOpenMailto}
+                  className="flex-1 flex items-center justify-center gap-2 bg-[var(--fg)] text-[var(--bg)] rounded-xl py-3 text-xs font-heading font-bold uppercase tracking-wider hover:opacity-90 transition-opacity cursor-pointer"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Default Mail App</span>
+                </button>
+              </div>
+
+              {/* Sent Status Message */}
+              {sentStatus && (
+                <p className="text-[11px] font-mono text-emerald-500 text-center mt-2.5 flex items-center justify-center gap-1">
+                  <Check className="w-3.5 h-3.5" /> Note prepared & email client opened!
+                </p>
+              )}
+            </div>
           </motion.div>
         </div>
       )}

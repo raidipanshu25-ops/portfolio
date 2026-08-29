@@ -184,14 +184,9 @@ export default function Projects() {
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
         >
-          <div className="flex items-center justify-between max-w-3xl mb-12">
-            <motion.h2 variants={item} className="section-heading mb-0">
-              Some Things I&apos;ve Built
-            </motion.h2>
-            <span className="text-xs font-mono text-[var(--fg-muted)] hidden sm:inline-block">
-              (click card for full details)
-            </span>
-          </div>
+          <motion.h2 variants={item} className="section-heading mb-12">
+            Some Things I&apos;ve Built
+          </motion.h2>
 
           <div className="flex flex-col gap-6 sm:gap-8 max-w-3xl">
             {projects.map((project, index) => (

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, type Variants } from "framer-motion";
-import { Pause, Play } from "lucide-react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -37,10 +37,26 @@ const skillGroups = [
 ];
 
 export default function Skills() {
-  const [isPaused, setIsPaused] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
 
-  // Duplicate the array to create a seamless infinite loop
-  const duplicatedGroups = [...skillGroups, ...skillGroups];
+  const total = skillGroups.length;
+
+  const handlePrev = () => {
+    setDirection(-1);
+    setStartIndex((prev) => (prev === 0 ? total - 2 : (prev - 2 + total) % total));
+  };
+
+  const handleNext = () => {
+    setDirection(1);
+    setStartIndex((prev) => (prev + 2) % total);
+  };
+
+  // Get the 2 active cards
+  const visibleCards = [
+    skillGroups[startIndex % total],
+    skillGroups[(startIndex + 1) % total],
+  ];
 
   return (
     <section
@@ -54,88 +70,91 @@ export default function Skills() {
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
         >
-          <div className="flex items-center justify-between max-w-3xl mb-4">
-            <motion.h2 variants={item} className="section-heading mb-0">
-              What I Work With
-            </motion.h2>
+          <motion.h2 variants={item} className="section-heading mb-10">
+            What I Work With
+          </motion.h2>
 
-            {/* Play / Pause indicator */}
-            <motion.button
-              variants={item}
-              onClick={() => setIsPaused((prev) => !prev)}
-              className="flex items-center gap-1.5 text-xs font-mono text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--bg-secondary)] cursor-pointer"
-              title={isPaused ? "Click to resume movement" : "Click to pause movement"}
-            >
-              {isPaused ? (
-                <>
-                  <Play className="w-3 h-3 text-[var(--accent)]" />
-                  <span>Resume</span>
-                </>
-              ) : (
-                <>
-                  <Pause className="w-3 h-3 text-[var(--accent)]" />
-                  <span>Moving (click to pause)</span>
-                </>
-              )}
-            </motion.button>
-          </div>
+          {/* 2-Card Slider with Left and Right Arrows */}
+          <motion.div variants={item} className="max-w-3xl">
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Left Arrow Button */}
+              <button
+                onClick={handlePrev}
+                className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full border border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--fg)] hover:border-[var(--accent)] hover:text-[var(--accent)] flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-105"
+                aria-label="Previous skill cards"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
 
-          {/* Carousel container showing 2 cards at a time */}
-          <motion.div
-            variants={item}
-            className="relative max-w-3xl overflow-hidden py-3"
-          >
-            {/* Edge fades for smooth visual transition */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[var(--bg)] to-transparent z-10" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[var(--bg)] to-transparent z-10" />
+              {/* 2 Visible Cards */}
+              <div className="flex-1 overflow-hidden py-2">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={startIndex}
+                    custom={direction}
+                    initial={{ opacity: 0, x: direction > 0 ? 40 : -40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: direction > 0 ? -40 : 40 }}
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
+                  >
+                    {visibleCards.map((group) => (
+                      <div
+                        key={group.title}
+                        className="project-card h-[230px] flex flex-col justify-between"
+                      >
+                        <div>
+                          <p className="text-[var(--accent)] font-mono text-sm font-semibold mb-3">
+                            {group.title}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {group.skills.map((skill) => (
+                              <span
+                                key={skill}
+                                className="text-[var(--fg-secondary)] text-xs sm:text-sm font-mono px-2.5 py-1 rounded-md bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-default"
+                              >
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
-            {/* Scrolling track */}
-            <div
-              className="flex gap-5 w-max cursor-pointer"
-              onClick={() => setIsPaused((prev) => !prev)}
-              style={{
-                animation: "skills-marquee 24s linear infinite",
-                animationPlayState: isPaused ? "paused" : "running",
-              }}
-            >
-              {duplicatedGroups.map((group, idx) => (
-                <div
-                  key={`${group.title}-${idx}`}
-                  className="project-card w-[300px] sm:w-[360px] h-[220px] shrink-0 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02]"
-                >
-                  <div>
-                    <p className="text-[var(--accent)] font-mono text-sm font-semibold mb-3">
-                      {group.title}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {group.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="text-[var(--fg-secondary)] text-xs sm:text-sm font-mono px-2.5 py-1 rounded-md bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              {/* Right Arrow Button */}
+              <button
+                onClick={handleNext}
+                className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full border border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--fg)] hover:border-[var(--accent)] hover:text-[var(--accent)] flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-105"
+                aria-label="Next skill cards"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="flex justify-center items-center gap-2 mt-6">
+              {[0, 2].map((pageIndex) => (
+                <button
+                  key={pageIndex}
+                  onClick={() => {
+                    setDirection(pageIndex > startIndex ? 1 : -1);
+                    setStartIndex(pageIndex);
+                  }}
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
+                    startIndex === pageIndex
+                      ? "w-6 bg-[var(--accent)]"
+                      : "w-2 bg-[var(--border)] hover:bg-[var(--fg-muted)]"
+                  }`}
+                  aria-label={`Go to slide ${pageIndex / 2 + 1}`}
+                />
               ))}
             </div>
           </motion.div>
         </motion.div>
       </div>
-
-      {/* Embedded keyframe animation for continuous smooth scrolling */}
-      <style jsx>{`
-        @keyframes skills-marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </section>
   );
 }

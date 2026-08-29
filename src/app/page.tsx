@@ -8,13 +8,17 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import { SocialSidebar } from "@/components/SocialSidebar";
 import { Spotlight } from "@/components/Spotlight";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 export default function Home() {
   return (
     <>
+      <ScrollProgress />
       <Spotlight />
+      {/* Ambient background dot grid */}
+      <div className="fixed inset-0 bg-grid-pattern opacity-40 pointer-events-none z-0" />
       <SocialSidebar />
-      <main className="min-h-screen">
+      <main className="min-h-screen relative z-10">
         <Navbar />
         <Hero />
         <About />

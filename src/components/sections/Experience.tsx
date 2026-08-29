@@ -45,10 +45,12 @@ export default function Experience() {
 
             <ul className="flex flex-col gap-4">
               {[
-                "Built the complete digital infrastructure — website, booking systems, and operational dashboards — from scratch with zero external funding.",
+                "Architected and built the full-stack platform on Next.js 16 (App Router) with TypeScript, Firebase Firestore for real-time data, and Clerk for authentication — deployed on Vercel with zero external funding.",
+                "Integrated Razorpay payment processing for trip bookings, Nodemailer & Resend for automated email confirmations, and Zod schema validation across all forms.",
+                "Built a comprehensive admin dashboard with analytics (Vercel Analytics & Speed Insights), booking management, trip CRUD operations, and real-time Firestore-powered data updates.",
+                "Designed the UI with Tailwind CSS, Shadcn/Radix primitives, Lottie animations, and Embla Carousel — delivering a premium, responsive experience across devices.",
                 "Coordinated group travel logistics across 5+ Indian states for 300+ travelers, managing vendor relationships, pricing, and real-time customer support.",
-                "Designed the brand identity, social media presence, and content strategy that grew the platform organically.",
-                "Implemented data-driven cost optimization that improved trip profitability while maintaining quality for travelers.",
+                "Designed the brand identity, social media presence, and content strategy that grew the platform organically from zero to a profitable operation.",
               ].map((text, i) => (
                 <motion.li key={i} variants={item} className="flex items-start">
                   <span className="text-[var(--accent)] mr-2 mt-1 shrink-0">▹</span>
